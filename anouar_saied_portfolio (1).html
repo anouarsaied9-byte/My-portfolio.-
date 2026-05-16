@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mhammed Anouar Saied — Instrumentation & Metrology Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0d0f;
+      --surface: #111416;
+      --border: #1e2226;
+      --gold: #c9a84c;
+      --gold-dim: #8a6f2f;
+      --text: #e8e2d6;
+      --muted: #7a7468;
+      --accent: #4a7fa5;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* === NOISE OVERLAY === */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* === HEADER === */
+    header {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 80px 60px;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .header-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.5;
+    }
+
+    .header-glow {
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
+      top: -200px;
+      right: -100px;
+      pointer-events: none;
+    }
+
+    .header-tag {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .header-tag::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 8vw, 110px);
+      font-weight: 300;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .header-meta {
+      margin-top: 40px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .header-meta span {
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+    }
+
+    .header-meta a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      transition: color 0.2s;
+    }
+    .header-meta a:hover { color: var(--gold); }
+
+    .header-meta .sep { color: var(--border); }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      right: 60px;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+
+    /* === LAYOUT === */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 60px;
+    }
+
+    section { padding: 100px 0; border-bottom: 1px solid var(--border); }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 60px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* === SUMMARY === */
+    .summary-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(20px, 2.5vw, 28px);
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--text);
+      max-width: 900px;
+    }
+
+    .summary-text strong {
+      color: var(--gold);
+      font-weight: 400;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin-top: 60px;
+    }
+
+    .stat {
+      background: var(--surface);
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .stat:hover { background: #161a1e; }
+
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 8px;
+      display: block;
+    }
+
+    /* === EXPERIENCE === */
+    .exp-item {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 60px;
+      padding: 48px 0;
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .exp-item.visible { opacity: 1; transform: translateY(0); }
+    .exp-item:last-child { border-bottom: none; }
+
+    .exp-meta { padding-top: 4px; }
+
+    .exp-period {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+    }
+
+    .exp-company {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--text);
+      margin-top: 8px;
+      line-height: 1.2;
+    }
+
+    .exp-badge {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 3px 10px;
+      border: 1px solid var(--gold-dim);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+    }
+
+    .exp-role {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--text);
+      margin-bottom: 24px;
+      line-height: 1.2;
+    }
+
+    .exp-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .exp-bullets li {
+      position: relative;
+      padding-left: 20px;
+      color: #9e9890;
+      font-size: 12px;
+    }
+
+    .exp-bullets li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--gold-dim);
+    }
+
+    /* === COMPETENCIES === */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .skill-card {
+      background: var(--surface);
+      padding: 32px 28px;
+      transition: background 0.3s;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s;
+    }
+    .skill-card.visible { opacity: 1; transform: translateY(0); }
+    .skill-card:hover { background: #161a1e; }
+
+    .skill-icon {
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    .skill-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .skill-desc {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* === CERTIFICATIONS === */
+    .certs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .cert-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      transform: translateX(-16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .cert-item.visible { opacity: 1; transform: translateX(0); }
+
+    .cert-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 300;
+      color: var(--text);
+    }
+
+    .cert-tag {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 4px 12px;
+      border: 1px solid rgba(74,127,165,0.3);
+    }
+
+    /* === EDUCATION === */
+    .edu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .edu-card {
+      background: var(--surface);
+      padding: 48px 40px;
+    }
+
+    .edu-year {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+    }
+
+    .edu-degree {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 300;
+      color: var(--text);
+      margin-top: 12px;
+      line-height: 1.3;
+    }
+
+    .edu-school {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 12px;
+      letter-spacing: 0.08em;
+    }
+
+    /* === CONTACT === */
+    .contact-section {
+      text-align: center;
+      padding: 120px 0;
+    }
+
+    .contact-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 6vw, 80px);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 48px;
+    }
+
+    .contact-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .contact-link:hover { color: var(--gold); }
+
+    .contact-link .icon {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    /* === FOOTER === */
+    footer {
+      padding: 32px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+    }
+
+    footer span {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .footer-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: pulse 2s infinite;
+    }
+
+    /* === ANIMATIONS === */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      header { padding: 60px 24px; }
+      .container { padding: 0 24px; }
+      section { padding: 60px 0; }
+      .exp-item { grid-template-columns: 1fr; gap: 20px; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .edu-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+      .scroll-hint { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .skills-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-grid"></div>
+  <div class="header-glow"></div>
+  <div class="header-tag">Instrumentation &amp; Metrology Engineer</div>
+  <h1>Mhammed<br><em>Anouar</em><br>Saied</h1>
+  <div class="header-meta">
+    <span>Hassi Messaoud, Algeria</span>
+    <span class="sep">·</span>
+    <a href="tel:+213659159284">+213 659 159 284</a>
+    <span class="sep">·</span>
+    <a href="mailto:anouarsaied9@gmail.com">anouarsaied9@gmail.com</a>
+    <span class="sep">·</span>
+    <span>6 Years Experience</span>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</header>
+
+<!-- SUMMARY -->
+<section>
+  <div class="container">
+    <div class="section-label">Profile</div>
+    <p class="summary-text">
+      An ISO/IEC 17025 certified engineer specializing in <strong>pressure &amp; hydrostatic testing</strong>,
+      <strong>measurement uncertainty evaluation</strong>, and <strong>metrological traceability</strong>
+      within oil &amp; gas environments. Adept at leading accreditation assessments, mentoring technical teams,
+      and driving continuous quality improvement in high-pressure industrial settings.
+    </p>
+
+    <div class="stats-row">
+      <div class="stat">
+        <span class="stat-number">6</span>
+        <span class="stat-label">Years of Experience</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">5</span>
+        <span class="stat-label">Internal Audits Led</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">15K</span>
+        <span class="stat-label">PSI Max Pressure</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">2</span>
+        <span class="stat-label">ALGERAC Accreditations</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section>
+  <div class="container">
+    <div class="section-label">Experience</div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-period">2023 — Ongoing</div>
+        <div class="exp-company">NOC Algeria</div>
+        <div class="exp-badge">Current Role</div>
+      </div>
+      <div>
+        <div class="exp-role">Laboratory Technical Manager</div>
+        <ul class="exp-bullets">
+          <li>Manage ISO/IEC 17025 accredited laboratory operations for oil &amp; gas pressure testing activities</li>
+          <li>Evaluate and calculate measurement uncertainty per ISO/IEC Guide 98-3 (GUM)</li>
+          <li>Develop and review uncertainty budgets for pressure and mechanical testing</li>
+          <li>Ensure metrological traceability of measurement results to international standards</li>
+          <li>Lead and supervise a team of 5 laboratory personnel, ensuring technical competence and ongoing training</li>
+          <li>Conducted and led 5 internal audits in compliance with ISO/IEC 17025 requirements</li>
+          <li>Successfully participated in 2 external accreditation assessments conducted by ALGERAC</li>
+          <li>Managed corrective actions (CAPA) and resolved non-conformities raised during audits</li>
+          <li>Validate and approve technical reports and compliance documentation</li>
+          <li>Maintain HSE compliance in high-pressure testing environments up to 15,000 psi</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-period">2019 — 2023</div>
+        <div class="exp-company">Foraid Group</div>
+      </div>
+      <div>
+        <div class="exp-role">Laboratory Technician</div>
+        <ul class="exp-bullets">
+          <li>Performed hydrostatic and mechanical pressure testing on valves and oilfield equipment</li>
+          <li>Conducted inspections in compliance with API 6A, 6D, 598, RP 576, and RP 527</li>
+          <li>Supported calibration and verification of pressure gauges and measurement instruments</li>
+          <li>Operated automated test benches including VENTIL and Metrus systems</li>
+          <li>Prepared technical reports and managed non-conformities (NCR)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETENCIES -->
+<section>
+  <div class="container">
+    <div class="section-label">Core Competencies</div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-icon">⚗️</div>
+        <div class="skill-title">ISO/IEC 17025 Compliance</div>
+        <div class="skill-desc">Full laboratory management system governance, internal audit leadership, and ALGERAC accreditation support.</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📐</div>
+        <div class="skill-title">Measurement Uncertainty</div>
+        <div class="skill-desc">GUM methodology application, uncertainty budget development and review for pressure and mechanical testing.</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🔗</div>
+        <div class="skill-title">Metrological Traceability</div>
+        <div class="skill-desc">Ensuring traceability of all measurement results to international standards and SI units.</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🔧</div>
+        <div class="skill-title">Pressure & Hydrostatic Testing</div>
+        <div class="skill-desc">Testing up to 15,000 psi on valves and oilfield equipment with automated bench operation (VENTIL, Metrus).</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📋</div>
+        <div class="skill-title">API Standards</div>
+        <div class="skill-desc">Proficient in API 6A, 6D, 598, RP 576, and RP 527 inspection and compliance protocols.</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">👥</div>
+        <div class="skill-title">Technical Team Leadership</div>
+        <div class="skill-desc">Supervising, training, and developing a team of 5 laboratory personnel in a regulated industrial environment.</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📊</div>
+        <div class="skill-title">Statistical & Quality Control</div>
+        <div class="skill-desc">Risk-based thinking, CAPA management, non-conformity resolution, and process improvement initiatives.</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🛡️</div>
+        <div class="skill-title">HSE Compliance</div>
+        <div class="skill-desc">Maintaining health, safety, and environmental standards within high-pressure oil &amp; gas facilities.</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📄</div>
+        <div class="skill-title">Technical Documentation</div>
+        <div class="skill-desc">Validation and approval of technical reports, compliance documentation, and audit records.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section>
+  <div class="container">
+    <div class="section-label">Certifications</div>
+    <div class="certs-list">
+      <div class="cert-item">
+        <div class="cert-name">ISO/IEC 17025</div>
+        <div class="cert-tag">Quality Systems</div>
+      </div>
+      <div class="cert-item">
+        <div class="cert-name">API RP 576</div>
+        <div class="cert-tag">API Standard</div>
+      </div>
+      <div class="cert-item">
+        <div class="cert-name">API RP 527</div>
+        <div class="cert-tag">API Standard</div>
+      </div>
+      <div class="cert-item">
+        <div class="cert-name">Industrial Electricity</div>
+        <div class="cert-tag">Technical</div>
+      </div>
+      <div class="cert-item">
+        <div class="cert-name">HSE Conditions</div>
+        <div class="cert-tag">Safety</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section>
+  <div class="container">
+    <div class="section-label">Education</div>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="edu-year">2019</div>
+        <div class="edu-degree">Master's Degree in Instrumentation</div>
+        <div class="edu-school">Djilali Liabes University</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-year">2017</div>
+        <div class="edu-degree">Bachelor's Degree in Fundamental Electronics</div>
+        <div class="edu-school">Djilali Liabes University</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" style="border-bottom: none;">
+  <div class="container">
+    <div class="contact-title">Let's work<br><em>together.</em></div>
+    <div class="contact-links">
+      <a href="tel:+213659159284" class="contact-link">
+        <span class="icon">📱</span>
+        +213 659 159 284
+      </a>
+      <a href="mailto:anouarsaied9@gmail.com" class="contact-link">
+        <span class="icon">✉️</span>
+        anouarsaied9@gmail.com
+      </a>
+      <div class="contact-link" style="cursor: default;">
+        <span class="icon">📍</span>
+        Hassi Messaoud, Algeria
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>Mhammed Anouar Saied — Portfolio 2025</span>
+  <div class="footer-dot"></div>
+  <span>Instrumentation &amp; Metrology Engineer</span>
+</footer>
+
+<script>
+  // Scroll-triggered reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        const delay = entry.target.dataset.delay || 0;
+        setTimeout(() => entry.target.classList.add('visible'), delay);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.exp-item, .skill-card, .cert-item').forEach((el, i) => {
+    el.dataset.delay = (i % 4) * 80;
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
